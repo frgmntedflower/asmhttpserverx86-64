@@ -1,9 +1,21 @@
 DEFAULT REL
-; --- Macros ---
+; ====== Macros ======
 %define AF_INET 2
 %define SOCK_STREAM 1
 %define PROTOCOL 0
-; --------------
+; ==================== 
+
+; ====================
+struc server_addr {
+    sin_family: resd  1
+    sin_port:   resw  1
+    sin_addr:   resd  1
+}
+endstruc
+
+; ====================
+
+
 
 ; -------------
 ; Note
@@ -24,6 +36,12 @@ section .data
   start_http_server_dbg_ref db "LABEL START_HTTP_SERVER", 10  ; debug label reference
   start_http_server_dbg_len equ $ - start_http_server_dbg_ref ; len of the reference
 
+  struct: 
+    istruc server_addr 
+        at sin_family, dd   AF_INET
+        at sin_por,    dw   8080
+        at sin_addr,   dd   
+  
 section .bss
   sockfd resq 1           ; Socket file descriptor
   buf  resb 20          ; buffer for ASCII conversion (max 20 digits)
